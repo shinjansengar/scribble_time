@@ -1,0 +1,9 @@
+.canvas-wrapper{
+    .canvas{
+        border: solid 1px black;
+    }
+    .disabled{
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
