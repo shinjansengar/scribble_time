@@ -2,17 +2,13 @@ import {useEffect, useRef, useState} from "react";
 import "./drawingBoard.scss";
 import CanvasTools from "../canvasTools/canvasTools";
 
-const DrawingBoard = ({
-    canvasData,
-    setCanvasData,
-    socket,
-    isDrawer
-}) =>{
+const DrawingBoard = ({socket}) =>{
     const [isPainting, setIsPainting] = useState(false);
-    
-
     const canvasRef = useRef(null);
 
+    const [canvasData, setCanvasData] = useState(null);
+    const [isDrawer, setDrawer] = useState(true);
+    
     useEffect(()=>{
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
@@ -21,15 +17,33 @@ const DrawingBoard = ({
         
         const initialImageData = ctx.getImageData(0,0,canvas.width,canvas.height);
         setCanvasData(initialImageData);
-    },[])
+    },[socket])
 
     useEffect(()=>{
+      if(canvasData){
+        socket.on("receive_message",(data)=>{
+            const newImageData = new ImageData(
+            new Uint8ClampedArray(canvasData.data),
+            canvasData?.width,
+            canvasData?.height
+            );
+            for (let i = 0; i < data.length; i += 2) {
+            newImageData.data[data[i]] = data[i + 1];
+            }
+            
+            setCanvasData(newImageData);
+            setDrawer(false);
+        })
+        
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         if(canvasData){
             ctx.putImageData(canvasData,0,0);
         }
-    },[canvasData]);
+      }
+      return ()=> socket.off("receive_message");
+    },[canvasData,socket])
+
 
     const startPosition=(e)=>{
         setIsPainting(true);
@@ -39,7 +53,6 @@ const DrawingBoard = ({
     const finishedPosition = () =>{
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
-        setIsPainting(false);
         ctx.beginPath();
         let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
         
@@ -50,28 +63,32 @@ const DrawingBoard = ({
             }
         }
         
+        setIsPainting(false);
+        setCanvasData(imageData);
         sendMessage(delta);
     }
 
     const draw = (e) =>{
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if(!isPainting) return;
-        ctx.lineWidth = 2;
-        ctx.lineCap = "round";
+      if(!isPainting) return;
 
-        ctx.lineTo(e.clientX,e.clientY);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(e.clientX,e.clientY);
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+
+      ctx.lineTo(e.clientX,e.clientY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(e.clientX,e.clientY);
     }
 
 
-    const sendMessage = (imageData,x)=>{
+    const sendMessage = (imageData)=>{
         if(socket){
           socket.emit("send_message",{data: imageData});
         }
     }
+    
     return(
         <div className="canvas-wrapper">
             <canvas 
