@@ -1,13 +1,15 @@
-import DrawingBoard from "./components/drawingBoard/drawingBoard";
-import io from "socket.io-client";
+import {Route,Routes} from  "react-router-dom";
+import "./App.scss";
+import Home from "./components/Home/home";
+import Playground from "./components/playground/playground";
 
-let socket = io.connect("http://192.168.29.223:3001");
 
 function App() {
   return (
-    <div className="App">
-      <DrawingBoard socket={socket} />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home/>}/>
+      <Route path="/playground" element={<Playground/>}/>
+    </Routes>
   );
 }
 

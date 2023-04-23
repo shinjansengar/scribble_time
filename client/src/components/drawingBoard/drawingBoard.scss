@@ -1,6 +1,11 @@
 .canvas-wrapper{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
     .canvas{
         border: solid 1px black;
+        width: 600px;
+        height: 450px;
     }
     .disabled{
         cursor: not-allowed;

@@ -1,0 +1,22 @@
+.chats-wrapper{
+    margin: 10px;
+    width: 300px;
+    border: solid 1px black;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    .previous-chats{
+        height: 400px;
+    }
+
+    .chat-input-wrapper{
+        display: flex;
+        .chat-input{
+            height: 50px;
+            width: 100%;
+        }
+        .chat-btn{
+            width: 75px;
+        }
+    }
+}

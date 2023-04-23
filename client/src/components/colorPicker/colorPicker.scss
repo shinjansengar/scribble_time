@@ -1,0 +1,19 @@
+.color-picker-wrapper{
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    .color-btn{
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        margin: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .color-picker-input{
+        width: 30px;
+        height: 30px;
+        margin: 5px;
+    }
+}
