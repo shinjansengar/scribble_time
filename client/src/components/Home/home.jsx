@@ -1,14 +1,16 @@
 import  "./home.scss";
 import UserInfo from "../userInfo/userInfo";
-import { useState } from "react";
+import ScribbleLogo from "../../assets/scribble.png";
 
 const Home = ()=>{
     return (
         <div className="main-wrapper">
-            <div>
-                <h1>
-                    Scribble Time!!!
-                </h1>
+            <div className="logo-wrapper">
+                <img 
+                    src={ScribbleLogo}
+                    alt="scribble-logo"
+                    draggable={false}
+                />
             </div>
             <UserInfo/>
         </div>

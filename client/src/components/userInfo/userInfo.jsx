@@ -1,17 +1,24 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./userInfo.scss";
 import Identicon from "react-identicons";
 import RandomDice from "../../assets/randomize.gif";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import userData from "../../utils/userData";
 
 const UserInfo = () => {
   const [username, setUsername] = useState("");
   const [hashValue, setHashvalue] = useState(`${10000 * Math.random()}`);
-
+  
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    userData.cleanSession();
+  },[]);
 
   const handlePlay = () => {
     if (!username) return;
+    userData.setData("username",username);
+    userData.setData("hashValue", hashValue);
     navigate("./playground")
   };
 
@@ -30,7 +37,7 @@ const UserInfo = () => {
           size={100}
           className="avatar"
           padding={2}
-          bg="orange"
+          bg="lightgreen"
         />
         <img
           onClick={() => {
@@ -39,6 +46,7 @@ const UserInfo = () => {
           src={RandomDice}
           alt="random"
           className="avatar-random-btn"
+          draggable={false}
         />
       </div>
       <button onClick={handlePlay} className="play-btn">

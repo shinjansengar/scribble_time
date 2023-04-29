@@ -63,18 +63,8 @@ const DrawingBoard = ({ socket }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.beginPath();
-    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-    const delta = [];
-    for (let i = 0; i < imageData.data.length; i++) {
-      if (imageData.data[i] !== canvasData.data[i]) {
-        delta.push(i, imageData.data[i]);
-      }
-    }
-
+    
     setIsPainting(false);
-    setCanvasData(imageData);
-    sendMessage(delta);
   };
 
   const draw = (e) => {
@@ -82,6 +72,8 @@ const DrawingBoard = ({ socket }) => {
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+    let previousImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
     ctx.lineWidth = canvasOptions.size;
     ctx.lineCap = "round";
     ctx.strokeStyle = canvasOptions.color;
@@ -90,6 +82,16 @@ const DrawingBoard = ({ socket }) => {
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+
+    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    const delta = [];
+    for (let i = 0; i < imageData.data.length; i++) {
+      if (imageData.data[i] !== previousImageData.data[i]) {
+        delta.push(i, imageData.data[i]);
+      }
+    }
+    sendMessage(delta);
   };
 
   const clearCanvas = ()=>{
@@ -101,9 +103,9 @@ const DrawingBoard = ({ socket }) => {
 
   }
 
-  const sendMessage = (imageData) => {
+  const sendMessage = (delta) => {
     if (socket) {
-      socket.emit("send_message", { data: imageData });
+      socket.emit("send_message", { data: delta });
     }
   };
 
@@ -115,6 +117,7 @@ const DrawingBoard = ({ socket }) => {
         onMouseDown={startPosition}
         onMouseMove={draw}
         onMouseUp={finishedPosition}
+        onMouseLeave={()=>setIsPainting(false)}
       />
       <CanvasTools
         clearCanvas={clearCanvas}
