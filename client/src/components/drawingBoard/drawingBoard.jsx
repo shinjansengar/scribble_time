@@ -4,14 +4,13 @@ import CanvasTools from "../canvasTools/canvasTools";
 
 const DrawingBoard = ({ socket }) => {
   const [isPainting, setIsPainting] = useState(false);
-
   const [canvasData, setCanvasData] = useState(null);
   const [isDrawer, setDrawer] = useState(true);
-
   const [canvasOptions, setCanvasOptions] = useState({
     color: "#000000",
     size: 2,
   });
+  
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -94,14 +93,6 @@ const DrawingBoard = ({ socket }) => {
     sendMessage(delta);
   };
 
-  const handleMouseLeave = ()=>{
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-
-    ctx.beginPath();
-    setIsPainting(false);
-  }
-
   const clearCanvas = ()=>{
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -125,7 +116,8 @@ const DrawingBoard = ({ socket }) => {
         onMouseDown={startPosition}
         onMouseMove={draw}
         onMouseUp={finishedPosition}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={finishedPosition}
+        draggable={false}
       />
       {
         isDrawer && 
