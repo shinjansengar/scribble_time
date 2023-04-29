@@ -31,7 +31,7 @@ const DrawingBoard = ({ socket }) => {
 
   useEffect(() => {
     if (canvasData) {
-      socket.on("receive_message", (data) => {
+      socket?.on("receive_message", (data) => {
         const newImageData = new ImageData(
           new Uint8ClampedArray(canvasData.data),
           canvasData?.width,
@@ -51,7 +51,7 @@ const DrawingBoard = ({ socket }) => {
         ctx.putImageData(canvasData, 0, 0);
       }
     }
-    return () => socket.off("receive_message");
+    return () => socket?.off("receive_message");
   }, [canvasData, socket]);
 
   const startPosition = (e) => {
@@ -94,6 +94,14 @@ const DrawingBoard = ({ socket }) => {
     sendMessage(delta);
   };
 
+  const handleMouseLeave = ()=>{
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    ctx.beginPath();
+    setIsPainting(false);
+  }
+
   const clearCanvas = ()=>{
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -105,7 +113,7 @@ const DrawingBoard = ({ socket }) => {
 
   const sendMessage = (delta) => {
     if (socket) {
-      socket.emit("send_message", { data: delta });
+      socket?.emit("send_message", { data: delta });
     }
   };
 
@@ -117,13 +125,16 @@ const DrawingBoard = ({ socket }) => {
         onMouseDown={startPosition}
         onMouseMove={draw}
         onMouseUp={finishedPosition}
-        onMouseLeave={()=>setIsPainting(false)}
+        onMouseLeave={handleMouseLeave}
       />
-      <CanvasTools
-        clearCanvas={clearCanvas}
-        canvasOptions={canvasOptions}
-        setCanvasOptions={setCanvasOptions}
-      />
+      {
+        isDrawer && 
+        <CanvasTools
+          clearCanvas={clearCanvas}
+          canvasOptions={canvasOptions}
+          setCanvasOptions={setCanvasOptions}
+        />
+      }
     </div>
   );
 };

@@ -6,13 +6,13 @@ const Chats = ({ socket }) => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    socket.on("receive_chat_message", (data) => {
+    socket?.on("receive_chat_message", (data) => {
       if (data.type === "chat" && data.message) {
         setChats((state) => [...state, data.message]);
       }
     });
 
-    return () => socket.off("receive_chat_message");
+    return () => socket?.off("receive_chat_message");
   }, [socket]);
 
   const sendMessage = (e) => {
@@ -36,7 +36,7 @@ const Chats = ({ socket }) => {
                 <input
                     className="chat-input"
                     type="text"
-                    placeholder="Write your guess..."
+                    placeholder="Type your guess..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                 />

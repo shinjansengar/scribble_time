@@ -1,18 +1,22 @@
+import { useEffect, useState } from "react";
 import Chats from "../chats/chats";
 import DrawingBoard from "../drawingBoard/drawingBoard";
 import Participants from "../participants/participants";
 import "./playground.scss";
-
-import io from "socket.io-client";
-
-let socket = io.connect("http://192.168.29.223:3001");
+import connect from "../../services/connect";
 
 const Playground = () => {
+  const [socket, setSocket] = useState();
+  
+  useEffect(() => {
+    setSocket(connect());
+  }, []);
+
   return (
     <div className="playground-wrapper">
-      <Participants/>
+      <Participants />
       <DrawingBoard socket={socket} />
-      <Chats socket={socket}/>
+      <Chats socket={socket} />
     </div>
   );
 };
