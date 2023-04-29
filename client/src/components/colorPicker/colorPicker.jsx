@@ -8,7 +8,7 @@ const ColorPicker = ({ canvasOptions, setCanvasOptions }) => {
         return (
           <button
             key={color}
-            className="color-btn"
+            className={canvasOptions.color === color ?"color-btn selected-color":"color-btn"}
             style={{ background: color }}
             onClick={() =>
               setCanvasOptions((state) => {

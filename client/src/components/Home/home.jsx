@@ -1,7 +1,18 @@
 import  "./home.scss";
+import UserInfo from "../userInfo/userInfo";
+import { useState } from "react";
 
 const Home = ()=>{
-    return (<h1>Home</h1>)
+    return (
+        <div className="main-wrapper">
+            <div>
+                <h1>
+                    Scribble Time!!!
+                </h1>
+            </div>
+            <UserInfo/>
+        </div>
+    )
 }
 
 export default Home;

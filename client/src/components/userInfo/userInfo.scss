@@ -1,0 +1,41 @@
+.input-wrapper{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    background: rgba($color:#0459da, $alpha: 0.5);
+    opacity: 1;
+    padding: 15px;
+    .name-input{
+        height: 45px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: none;
+        padding: 5px;
+    }
+    .play-btn{
+        height: 45px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        background-color: #53e237;
+        color: #ffffff;
+        font-weight: 900;
+        font-size: 20px;
+    }
+    .user-avatar{
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        background: rgba($color:#124da5, $alpha: 0.6);
+        position: relative;
+        padding: 10px;
+        justify-content: space-around;
+        .avatar-random-btn{
+            margin-left: 25px;
+            height: 50px;
+            cursor: pointer;
+        }
+    }
+}

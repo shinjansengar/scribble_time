@@ -10,7 +10,11 @@
         border: none;
         cursor: pointer;
     }
-
+    
+    .selected-color{
+        border: solid lightgray;
+    }
+    
     .color-picker-input{
         width: 30px;
         height: 30px;
