@@ -7,7 +7,34 @@
     background: #ffffff;
     flex-direction: column;
     .previous-chats{
+        display: flex;
+        flex-direction: column;
         height: 400px;
+        padding: 10px;
+        overflow-y: auto;
+        .list-item{
+            display: flex;
+            list-style: none;
+            align-items: center;
+            margin: 2px;
+            .list-name-icon{
+                display: flex;
+                align-items: center;
+                .list-icon{
+                    border: none;
+                    border-radius: 20px;
+                }
+            }
+            .list-name{
+                font-size: 14px;
+                margin: 5px;
+            }
+            .list-message{
+                font-size: 12px;
+                margin: 5px;
+                word-wrap: break-word;
+            }
+        }
     }
 
     .chat-input-wrapper{

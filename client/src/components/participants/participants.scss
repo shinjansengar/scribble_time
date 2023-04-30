@@ -1,0 +1,31 @@
+.list-wrapper{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background:#ffffff;
+    height: 450px;
+    margin: 10px;
+    width: 150px;
+    padding: 0px;
+    .user-list-item{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .icon-name{
+            display: flex;
+            align-items: center;
+        }
+        .list-icon{
+            border: none;
+            border-radius: 20px;
+            margin: 5px;
+        }
+
+        .list-username{
+            font-size: 16px;
+        }
+        .list-score{
+            margin: 10px;
+        }
+    }
+}
